@@ -34,6 +34,30 @@ public class GUI extends JFrame{
 		dropdownOne.setModel(new DefaultComboBoxModel(new String[] {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"}));
 		dropdownOne.setBounds(127, 76, 132, 31);
 		getContentPane().add(dropdownOne);
+		
+		JComboBox dropdownTwo = new JComboBox();
+		dropdownTwo.setModel(new DefaultComboBoxModel(new String[] {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"}));
+		dropdownTwo.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+		dropdownTwo.setBounds(127, 165, 132, 31);
+		getContentPane().add(dropdownTwo);
+		
+		JComboBox dropdownThree = new JComboBox();
+		dropdownThree.setModel(new DefaultComboBoxModel(new String[] {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"}));
+		dropdownThree.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+		dropdownThree.setBounds(127, 253, 132, 31);
+		getContentPane().add(dropdownThree);
+		
+		JComboBox dropdownFour = new JComboBox();
+		dropdownFour.setModel(new DefaultComboBoxModel(new String[] {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"}));
+		dropdownFour.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+		dropdownFour.setBounds(127, 341, 132, 31);
+		getContentPane().add(dropdownFour);
+		
+		JComboBox dropdownFive = new JComboBox();
+		dropdownFive.setModel(new DefaultComboBoxModel(new String[] {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"}));
+		dropdownFive.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+		dropdownFive.setBounds(127, 432, 132, 31);
+		getContentPane().add(dropdownFive);
 		}
 
 	public static void main(String[] args) {
