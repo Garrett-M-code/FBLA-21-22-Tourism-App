@@ -1,74 +1,62 @@
-import javax.swing.JFrame;
+import javax.swing.*;
+
 import java.awt.Color;
 import java.awt.Dimension;
-
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.JSeparator;
-import javax.swing.JList;
-import javax.swing.border.LineBorder;
-import javax.swing.AbstractListModel;
-import javax.swing.ListSelectionModel;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 
 public class GUI extends JFrame{
+  // This is used to create the GUI orentation when ran.
+
 	public GUI() {
+    // Sets up the basic window properties like exiting, Title, layout style, and background color.
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Tourism App");
 		getContentPane().setLayout(null);
 		
+    // Creates the header of the application.
 		JLabel titleLbl = new JLabel("Henry County, Ga Visitor Center!");
 		titleLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLbl.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
 		titleLbl.setBounds(0, 0, 986, 46);
 		getContentPane().add(titleLbl);
 		
-		JComboBox dropdownOne = new JComboBox();
-		dropdownOne.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
-		dropdownOne.setModel(new DefaultComboBoxModel(new String[] {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"}));
-		dropdownOne.setBounds(127, 76, 132, 31);
-		getContentPane().add(dropdownOne);
+    // Code for the first dropdown which deals with attraction type.
+		JComboBox attraction = new JComboBox();
+		attraction.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+		attraction.setModel(new DefaultComboBoxModel(new String[] {"------", "Hotel", "Entertainment", "Resturant", "Park", "Shop"}));
+		attraction.setBounds(127, 76, 132, 31);
+		getContentPane().add(attraction);
 		
-		JComboBox dropdownTwo = new JComboBox();
-		dropdownTwo.setModel(new DefaultComboBoxModel(new String[] {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"}));
-		dropdownTwo.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
-		dropdownTwo.setBounds(127, 165, 132, 31);
-		getContentPane().add(dropdownTwo);
+    // Code for the second dropdown which deals with ratings.
+		JComboBox rating = new JComboBox();
+		rating.setModel(new DefaultComboBoxModel(new String[] {"------", "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"}));
+		rating.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+		rating.setBounds(127, 165, 132, 31);
+		getContentPane().add(rating);
 		
-		JComboBox dropdownThree = new JComboBox();
-		dropdownThree.setModel(new DefaultComboBoxModel(new String[] {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"}));
-		dropdownThree.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
-		dropdownThree.setBounds(127, 253, 132, 31);
-		getContentPane().add(dropdownThree);
+    // Code for the third dropdown which deals with proximity.
+		JComboBox proximity = new JComboBox();
+		proximity.setModel(new DefaultComboBoxModel(new String[] {"------", "1 Mile Away", "5 Miles Away", "10 Miles Away", "15 Miles Away"}));
+		proximity.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+		proximity.setBounds(127, 253, 132, 31);
+		getContentPane().add(proximity);
 		
-		JComboBox dropdownFour = new JComboBox();
-		dropdownFour.setModel(new DefaultComboBoxModel(new String[] {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"}));
-		dropdownFour.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
-		dropdownFour.setBounds(127, 341, 132, 31);
-		getContentPane().add(dropdownFour);
+    // Code for the fourth dropdown which deals with pricing.
+		JComboBox price = new JComboBox();
+		price.setModel(new DefaultComboBoxModel(new String[] {"------", "Free", "$", "$$", "$$$"}));
+		price.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+		price.setBounds(127, 341, 132, 31);
+		getContentPane().add(price);
 		
-		JComboBox dropdownFive = new JComboBox();
-		dropdownFive.setModel(new DefaultComboBoxModel(new String[] {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"}));
-		dropdownFive.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
-		dropdownFive.setBounds(127, 432, 132, 31);
-		getContentPane().add(dropdownFive);
-		}
-
-	public static void main(String[] args) {
-		GUI instance = new GUI();
-		instance.setSize(new Dimension(1000,600));
-        instance.setVisible(true);
-        
-		String[] dropdownOneList = {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"};
-		String[] dropdownTwoList = {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"};
-		String[] dropdownThreeList = {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"};
-		String[] dropdownFourList = {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"};
-		String[] dropdownFiveList = {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"};
-  }
+    // Code for the fifth dropdown which deals with the operating hours.
+		JComboBox workHours = new JComboBox();
+		workHours.setModel(new DefaultComboBoxModel(new String[] {"------", "Morning", "Afternoon", "Night"}));
+		workHours.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+		workHours.setBounds(127, 432, 132, 31);
+		getContentPane().add(workHours);
+    }
 }
+
