@@ -20,6 +20,12 @@ import java.util.*;
 public class GUI extends JFrame {
   // This is used to create the GUI orentation when ran.
 
+  static String selectedAttraction = "--:--";
+  static String selectedRating = "--:--";
+  static String selectedProximity = "--:--";
+  static String selectedPrice = "--:--";
+  static String selectedHours = "--:--";
+
 	public GUI(){
     try {
       // parsing file "JSONExample.json"
@@ -65,10 +71,7 @@ public class GUI extends JFrame {
       attraction.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           // Saves the value lasted picked by the attraction JComboBox
-          String selectedAttraction = attraction.getSelectedItem().toString();
-
-          Reader(fileData);
-    
+          selectedAttraction = attraction.getSelectedItem().toString();
           System.out.println(selectedAttraction);
         } 
       });
@@ -90,7 +93,7 @@ public class GUI extends JFrame {
       rating.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           // Saves the value lasted picked by the rating JComboBox
-          String selectedRating = rating.getSelectedItem().toString();
+          selectedRating = rating.getSelectedItem().toString();
           System.out.println(selectedRating);
         } 
       });
@@ -112,7 +115,7 @@ public class GUI extends JFrame {
       proximity.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           // Saves the value lasted picked by the proximity JComboBox
-          String selectedProximity = proximity.getSelectedItem().toString();
+          selectedProximity = proximity.getSelectedItem().toString();
           System.out.println(selectedProximity);
         } 
       });
@@ -134,7 +137,7 @@ public class GUI extends JFrame {
       price.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           // Saves the value lasted picked by the price JComboBox
-          String selectedPrice = price.getSelectedItem().toString();
+          selectedPrice = price.getSelectedItem().toString();
           System.out.println(selectedPrice);
         } 
       });
@@ -156,10 +159,29 @@ public class GUI extends JFrame {
       workHours.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           // Saves the value lasted picked by the hours JComboBox
-          String selectedHours = workHours.getSelectedItem().toString();
+          selectedHours = workHours.getSelectedItem().toString();
           System.out.println(selectedHours);
         } 
       });
+
+
+      // A button that then searches.
+      JButton btnRun = new JButton("Search!");
+		  btnRun.addActionListener(new ActionListener() {
+			  public void actionPerformed(ActionEvent e) {
+          
+          // This creates a linked list that has all locations
+          LinkedList superList = masterList(fileData); 
+          // This creates a linkedList that has all the attributes
+          LinkedList filteringPolicy = Reader();
+          // This will produce a list of the items to be used
+          LinkedList resultingItems = locationFilter(superList, filteringPolicy);
+          System.out.println(resultingItems);
+			  }
+		  });
+		  btnRun.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+		  btnRun.setBounds(545, 327, 106, 27);
+		  getContentPane().add(btnRun);
 
       // Will display a location and its information when a user selects a place.
       JTextPane txtLocationOutput = new JTextPane();
@@ -202,27 +224,215 @@ public class GUI extends JFrame {
     }
 	}
 
-  public static void Reader(JSONObject fileData) {
-    String[] results = {};
-    // This will go through all the locations in the provided JSON file.
-    JSONArray id = (JSONArray) fileData.get("Place");
+  public static LinkedList masterList(JSONObject fileData) {
 
-    Iterator itr = id.iterator();
-    while (itr.hasNext()) {
-      Iterator<Map.Entry> itr1 = ((Map) itr.next()).entrySet().iterator();
+      // A temperary list used in filtering
+      LinkedList superList = new LinkedList();
 
-      int i = 0;
-      while (itr1.hasNext()) {
-        Map.Entry pair = itr1.next();
-        System.out.println(pair.getValue());
-                
-        if (i == 4) {
-          System.out.println(pair.getValue());
-          Object name = pair.getValue();
-          System.out.println(name);  
-          }  
-          i++;
-      }
+    try {
+      // This will go through all the locations in the provided JSON file.
+      JSONArray id = (JSONArray) fileData.get("Place");
+      // Creates the iterator for the while loops and parsing.
+      Iterator itr = id.iterator();
+      Iterator itr2 = id.iterator();
+
+
+      // This will deal with making all the items into a list
+      while (itr2.hasNext()) {
+        // Creates a linked list that will transfer the data from each item.
+        LinkedList transferList = new LinkedList();
+
+        // Creates an iterator that will be used to add data to temp list.
+        Iterator<Map.Entry> itr3 = ((Map) itr2.next()).entrySet().iterator();
+
+        int firstRecusion = 0;
+
+        while (itr3.hasNext()) {
+          // Got to have some good 'ol hash maps
+          Map.Entry recursiveData = itr3.next();
+
+          Object tempData = recursiveData.getValue();
+
+          transferList.add(tempData);
+
+          } // This ends the inner while loop
+
+          superList.add(transferList);
+          firstRecusion++;
+
+      } // This ends the main while loop
+
+    } catch (Exception e) {
+    // This prints out the error if the code does not work.
+      System.out.println(e);
     }
-  }
-}
+
+    return superList;
+  } // This iterates through every item in the Json
+
+
+
+  public static LinkedList Reader() {
+    // A linked list that can be referenced and will contain all attributes
+    LinkedList attributes = new LinkedList();
+
+    try {
+      long selectedProximityLong = 0;
+      long selectedRatingLong = 0;
+
+      if (selectedProximity == "1 Mile Away") {
+        selectedProximityLong = 1;
+      } else if (selectedProximity == "5 Miles Away") {
+        selectedProximityLong = 5;
+      } else if (selectedProximity == "10 Miles Away") {
+        selectedProximityLong = 10;
+      } else if (selectedProximity == "15 Miles Away") {
+        selectedProximityLong = 15;
+      }
+
+      if (selectedRating == "5 Stars") {
+        selectedRatingLong = 5;
+      } else if (selectedRating == "4 Stars") {
+        selectedRatingLong = 4;
+      } else if (selectedRating == "3 Stars") {
+        selectedRatingLong = 3;
+      } else if (selectedRating == "2 Stars") {
+        selectedRatingLong = 2;
+      } else if (selectedRating == "1 Star") {
+        selectedRatingLong = 1;
+      }
+
+      attributes.add(selectedProximityLong);
+      attributes.add(selectedPrice);
+      attributes.add(selectedRatingLong);
+      attributes.add(selectedAttraction);
+      attributes.add(selectedHours);
+
+    } catch (Exception e) {
+      // This prints out the error if the code does not work.
+      System.out.println(e);
+    }
+
+    return attributes;
+  } // Ends Reader class
+
+
+
+
+  public static LinkedList locationFilter(LinkedList superList, LinkedList attributes) {
+
+    LinkedList finalItems = superList;
+
+    try {
+
+      for (int i = 0; i < superList.size(); i++ ) {
+        // This will deal with running through all the inner lists.
+        Object nestedList = superList.get(i);
+
+        boolean testPass = true;
+
+        // These are nessacary to determine if all tests are passed.
+        boolean testPass1 = true;
+        boolean testPass2 = true;
+        boolean testPass3 = true;
+        boolean testPass4 = true;
+        boolean testPass5 = true;
+
+        int reRun = 0;
+
+        LinkedList innerList = new LinkedList();
+        innerList.add(nestedList);
+
+
+
+        for (int p = 0; p < innerList.size(); p++ ) {
+          // This will deal with running trough all the items on the nested lists
+
+          Object itemList = innerList.get(p);
+
+          /*if (reRun == 0) {
+            System.out.println((attributes.get(0)).getClass().getName());
+            if ((attributes.get(0)) >= itemList) {
+              System.out.println("Test Passed");
+            } else {
+              testPass1 = false;
+            }
+
+
+          } else if (reRun == 1) {
+            if (attributes.get(1) <= itemList) {
+              System.out.println("Test Passed");
+            } else {
+              testPass2 = false;
+            }
+
+
+          } else if (reRun == 2) {
+            if (attributes.get(2) == itemList) {
+              System.out.println("Test Passed");
+            } else {
+              testPass3 = false;
+            }
+
+
+          } else if (reRun == 3) {
+            System.out.println(itemList);
+
+
+
+          } else if (reRun == 4) {
+            System.out.println(itemList);
+
+
+
+          } else if (reRun == 5) {
+            if (attributes.get(3) == itemList) {
+              System.out.println("Test Passed");
+            } else {
+              testPass4 = false;
+            }
+
+
+          } else if (reRun == 6) {
+            if (attributes.get(4) == itemList) {
+              System.out.println("Test Passed");
+            } else {
+              testPass5 = false;
+            }
+
+
+          } else {
+            System.out.println("Error");
+            System.out.println("The testing conditional failed");
+          }*/
+
+          reRun++;
+
+        } // Ends item for loop.
+
+        if ((testPass1 == true) && (testPass2 == true) && (testPass3 == true) && (testPass4 == true) && (testPass5 == true)) {
+          testPass = true;
+        } else {
+          testPass = false;
+        }
+
+        if (testPass == true) {
+          System.out.println("This item Passed");
+
+        } else if (testPass == false) {
+          System.out.println("This item failed");
+          finalItems.remove(nestedList);
+        }
+
+
+      } // Ends list for loop 
+
+
+    } catch (Exception e) {
+      // This prints out the error if the code does not work.
+      System.out.println(e);
+    } // This ends the catch
+
+    return finalItems;
+  } // This ends the class
+} // Ends program
