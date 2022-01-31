@@ -16,7 +16,6 @@ import javax.swing.event.*;
 
 import java.util.*;
 
-
 public class GUI extends JFrame {
   // This is used to create the GUI orentation when ran.
 
@@ -26,34 +25,35 @@ public class GUI extends JFrame {
   static String selectedPrice = "--:--";
   static String selectedHours = "--:--";
 
-	public GUI(){
+  public GUI() {
     try {
       // parsing file "JSONExample.json"
       Object obj = new JSONParser().parse(new FileReader("locationData.json"));
-          
+
       // typecasting obj to JSONObject
       JSONObject fileData = (JSONObject) obj;
 
       // These are non-functioning arrays
-      String[] attractionList = {"------", "Hotel", "Entertainment", "Resturant", "Park", "Shop"};
-      String[] ratingList = {"------", "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"};
-      String[] proximityList = {"------", "1 Mile Away", "5 Miles Away", "10 Miles Away", "15 Miles Away"};
-      String[] priceList = {"------", "Free", "$", "$$", "$$$"};
-      String[] workHoursList = {"------", "Morning", "Afternoon", "Night"};
+      String[] attractionList = { "------", "Hotel", "Entertainment", "Restaurant", "Park", "Shop" };
+      String[] ratingList = { "------", "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star" };
+      String[] proximityList = { "------", "1 Mile Away", "5 Miles Away", "10 Miles Away", "15 Miles Away" };
+      String[] priceList = { "------", "Free", "$", "$$", "$$$" };
+      String[] workHoursList = { "------", "Morning", "Afternoon", "Night" };
 
-      // Sets up the basic window properties like exiting, Title, layout style, and background color.
+      // Sets up the basic window properties like exiting, Title, layout style, and
+      // background color.
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       getContentPane().setBackground(Color.WHITE);
       setTitle("Tourism App");
       getContentPane().setLayout(null);
-      
+
       // Creates the header of the application.
       JLabel titleLbl = new JLabel("Henry County, Ga Visitor Center!");
       titleLbl.setHorizontalAlignment(SwingConstants.CENTER);
       titleLbl.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
       titleLbl.setBounds(0, 0, 986, 46);
       getContentPane().add(titleLbl);
-      
+
       // Creates the header for the first dropdown (Attractions).
       JLabel lblAttract = new JLabel("Attraction");
       lblAttract.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
@@ -72,8 +72,7 @@ public class GUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
           // Saves the value lasted picked by the attraction JComboBox
           selectedAttraction = attraction.getSelectedItem().toString();
-          System.out.println(selectedAttraction);
-        } 
+        }
       });
 
       // Creates the header for the second dropdown (Rating).
@@ -81,7 +80,7 @@ public class GUI extends JFrame {
       lblRatings.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
       lblRatings.setBounds(50, 124, 112, 31);
       getContentPane().add(lblRatings);
-      
+
       // Code for the second dropdown which deals with ratings.
       JComboBox rating = new JComboBox();
       rating.setModel(new DefaultComboBoxModel(ratingList));
@@ -94,10 +93,9 @@ public class GUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
           // Saves the value lasted picked by the rating JComboBox
           selectedRating = rating.getSelectedItem().toString();
-          System.out.println(selectedRating);
-        } 
+        }
       });
-      
+
       // Creates the header for the third dropdown (Proximity).
       JLabel lblProximity = new JLabel("Location");
       lblProximity.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
@@ -116,10 +114,9 @@ public class GUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
           // Saves the value lasted picked by the proximity JComboBox
           selectedProximity = proximity.getSelectedItem().toString();
-          System.out.println(selectedProximity);
-        } 
+        }
       });
-      
+
       // Creates the header for the fourth dropdown (Price).
       JLabel lblPrice = new JLabel("Price");
       lblPrice.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
@@ -138,8 +135,7 @@ public class GUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
           // Saves the value lasted picked by the price JComboBox
           selectedPrice = price.getSelectedItem().toString();
-          System.out.println(selectedPrice);
-        } 
+        }
       });
 
       // Creates the header for the fifth dropdown (Hours).
@@ -147,7 +143,7 @@ public class GUI extends JFrame {
       lblHours.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
       lblHours.setBounds(50, 394, 112, 31);
       getContentPane().add(lblHours);
-      
+
       // Code for the fifth dropdown which deals with the operating hours.
       JComboBox workHours = new JComboBox();
       workHours.setModel(new DefaultComboBoxModel(workHoursList));
@@ -160,74 +156,90 @@ public class GUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
           // Saves the value lasted picked by the hours JComboBox
           selectedHours = workHours.getSelectedItem().toString();
-          System.out.println(selectedHours);
-        } 
+        }
       });
-
-
-      // A button that then searches.
-      JButton btnRun = new JButton("Search!");
-		  btnRun.addActionListener(new ActionListener() {
-			  public void actionPerformed(ActionEvent e) {
-          
-          // This creates a linked list that has all locations
-          LinkedList superList = masterList(fileData); 
-          // This creates a linkedList that has all the attributes
-          LinkedList filteringPolicy = Reader();
-          // This will produce a list of the items to be used
-          LinkedList resultingItems = locationFilter(superList, filteringPolicy);
-          System.out.println(resultingItems);
-			  }
-		  });
-		  btnRun.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
-		  btnRun.setBounds(545, 327, 106, 27);
-		  getContentPane().add(btnRun);
 
       // Will display a location and its information when a user selects a place.
       JTextPane txtLocationOutput = new JTextPane();
       txtLocationOutput.setEditable(false);
-      txtLocationOutput.setText("Please select a location to view its information.");
+      txtLocationOutput.setText(
+          "Please select from the attributes to the left and click the search button above when you are ready!");
       txtLocationOutput.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
       txtLocationOutput.setBackground(Color.LIGHT_GRAY);
       txtLocationOutput.setBounds(317, 364, 601, 124);
       getContentPane().add(txtLocationOutput);
 
-      // It will display all possible choices in a list from which the user can select an option.
+      // A button that then searches.
+      JButton btnRun = new JButton("Search!");
+      btnRun.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          if ((selectedAttraction == "--:--") || (selectedRating == "--:--") || (selectedProximity == "--:--")
+              || (selectedPrice == "--:--") || (selectedHours == "--:--")) {
+
+            txtLocationOutput.setText("Make sure you select all options.");
+
+          } else if ((selectedAttraction == "------") || (selectedRating == "------") || (selectedProximity == "------")
+              || (selectedPrice == "------") || (selectedHours == "------")) {
+
+            txtLocationOutput.setText("Make sure you select all options.");
+
+          } else {
+
+            txtLocationOutput.setText("Please select a location to view its information.");
+
+            // This creates a linked list that has all locations
+            LinkedList superList = masterList(fileData);
+            // This creates a linkedList that has all the attributes
+            LinkedList filteringPolicy = Reader();
+            // This will produce a list of the items to be used
+            LinkedList resultingItems = locationFilter(superList, filteringPolicy);
+            System.out.println(resultingItems);
+          }
+        }
+      });
+      btnRun.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+      btnRun.setBounds(545, 327, 106, 27);
+      getContentPane().add(btnRun);
+
+      // It will display all possible choices in a list from which the user can select
+      // an option.
       JList resultsListed = new JList();
       resultsListed.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
       resultsListed.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
       resultsListed.setModel(new AbstractListModel() {
-          String[] values = new String[] {"Item 1", "Item 2", "Item 3 ", "Item 4", "Item 5", "Item 6"};
-          public int getSize() {
-            return values.length;
-          }
-          public Object getElementAt(int index) {
-            return values[index];
-          }
+        String[] values = new String[] { "Item 1", "Item 2", "Item 3 ", "Item 4", "Item 5", "Item 6" };
+
+        public int getSize() {
+          return values.length;
+        }
+
+        public Object getElementAt(int index) {
+          return values[index];
+        }
       });
       resultsListed.setBackground(Color.GRAY);
       resultsListed.setBounds(317, 76, 601, 241);
       getContentPane().add(resultsListed);
-      
+
       // Event listener for when an item is selected
       resultsListed.addListSelectionListener(new ListSelectionListener() {
-			  public void valueChanged(ListSelectionEvent e) {
+        public void valueChanged(ListSelectionEvent e) {
           int selectedOption = resultsListed.getSelectedIndex();
           String selectedListedOption = Integer.toString(selectedOption + 1);
           txtLocationOutput.setText(selectedListedOption);
-			  }
+        }
       });
 
     } catch (Exception e) {
       // This prints out the error if the code does not work.
       System.out.println(e);
     }
-	}
+  }
 
   public static LinkedList masterList(JSONObject fileData) {
 
-      // A temperary list used in filtering
-      LinkedList superList = new LinkedList();
+    // A temperary list used in filtering
+    LinkedList superList = new LinkedList();
 
     try {
       // This will go through all the locations in the provided JSON file.
@@ -235,7 +247,6 @@ public class GUI extends JFrame {
       // Creates the iterator for the while loops and parsing.
       Iterator itr = id.iterator();
       Iterator itr2 = id.iterator();
-
 
       // This will deal with making all the items into a list
       while (itr2.hasNext()) {
@@ -255,22 +266,20 @@ public class GUI extends JFrame {
 
           transferList.add(tempData);
 
-          } // This ends the inner while loop
+        } // This ends the inner while loop
 
-          superList.add(transferList);
-          firstRecusion++;
+        superList.add(transferList);
+        firstRecusion++;
 
       } // This ends the main while loop
 
     } catch (Exception e) {
-    // This prints out the error if the code does not work.
+      // This prints out the error if the code does not work.
       System.out.println(e);
     }
 
     return superList;
   } // This iterates through every item in the Json
-
-
 
   public static LinkedList Reader() {
     // A linked list that can be referenced and will contain all attributes
@@ -316,16 +325,14 @@ public class GUI extends JFrame {
     return attributes;
   } // Ends Reader class
 
-
-
-
   public static LinkedList locationFilter(LinkedList superList, LinkedList attributes) {
 
     LinkedList finalItems = superList;
+    LinkedList indexsToRemove = new LinkedList();
 
     try {
 
-      for (int i = 0; i < superList.size(); i++ ) {
+      for (int i = 0; i < superList.size(); i++) {
         // This will deal with running through all the inner lists.
         Object nestedList = superList.get(i);
 
@@ -338,101 +345,110 @@ public class GUI extends JFrame {
         boolean testPass4 = true;
         boolean testPass5 = true;
 
-        int reRun = 0;
-
         LinkedList innerList = new LinkedList();
-        innerList.add(nestedList);
+        // innerList.add(nestedList);
+        innerList = (LinkedList) nestedList;
 
-
-
-        for (int p = 0; p < innerList.size(); p++ ) {
+        for (int p = 0; p < innerList.size(); p++) {
           // This will deal with running trough all the items on the nested lists
 
           Object itemList = innerList.get(p);
 
-          /*if (reRun == 0) {
-            System.out.println((attributes.get(0)).getClass().getName());
-            if ((attributes.get(0)) >= itemList) {
-              System.out.println("Test Passed");
-            } else {
+          if (p == 0) {
+            // Checks proximty
+            long tester = (long) attributes.get(0);
+            long userSelection = (long) itemList;
+            // Creates an integer so that the expression below works.
+            if (tester < userSelection) {
               testPass1 = false;
             }
 
-
-          } else if (reRun == 1) {
-            if (attributes.get(1) <= itemList) {
-              System.out.println("Test Passed");
+          } else if (p == 1) {
+            // Checks the price
+            if ((attributes.get(1)).equals(itemList)) {
+              testPass2 = true;
             } else {
               testPass2 = false;
             }
 
-
-          } else if (reRun == 2) {
-            if (attributes.get(2) == itemList) {
-              System.out.println("Test Passed");
-            } else {
+          } else if (p == 2) { 
+            // Checks Rating
+            long tester = (long) attributes.get(2);
+            long userSelection = (long) itemList;
+            // Creates an integer so that the expression below works.
+            if (tester > userSelection) {
               testPass3 = false;
             }
 
-
-          } else if (reRun == 3) {
-            System.out.println(itemList);
-
-
-
-          } else if (reRun == 4) {
-            System.out.println(itemList);
-
-
-
-          } else if (reRun == 5) {
-            if (attributes.get(3) == itemList) {
-              System.out.println("Test Passed");
+          } else if (p == 5) {
+            // Checks attraction
+            if ((attributes.get(3)).equals(itemList)) {
+              testPass4 = true;
             } else {
               testPass4 = false;
             }
 
+          } else if (p == 6) {
+            // Checks operating hours
+            String userSelection = (String) itemList;
+            String tester = "";
+            if (attributes.get(4) == "Morning") {
+              tester = "M";
+            } else if (attributes.get(4) == "Afternoon") {
+              tester = "A";
+            } else if (attributes.get(4) == "Night") {
+              tester = "E";
+            }
 
-          } else if (reRun == 6) {
-            if (attributes.get(4) == itemList) {
-              System.out.println("Test Passed");
+            // Checks hours
+            if (userSelection.contains(tester)) {
+              testPass5 = true;
             } else {
               testPass5 = false;
             }
-
-
-          } else {
-            System.out.println("Error");
-            System.out.println("The testing conditional failed");
-          }*/
-
-          reRun++;
-
+          }
         } // Ends item for loop.
 
-        if ((testPass1 == true) && (testPass2 == true) && (testPass3 == true) && (testPass4 == true) && (testPass5 == true)) {
+        if ((testPass1 == true) && (testPass2 == true) && (testPass3 == true) && (testPass4 == true)
+            && (testPass5 == true)) {
           testPass = true;
         } else {
           testPass = false;
         }
 
-        if (testPass == true) {
-          System.out.println("This item Passed");
-
-        } else if (testPass == false) {
-          System.out.println("This item failed");
-          finalItems.remove(nestedList);
+        if (testPass == false) {
+          indexsToRemove.add(i);
         }
-
-
-      } // Ends list for loop 
-
+      } // Ends list for loop
 
     } catch (Exception e) {
       // This prints out the error if the code does not work.
       System.out.println(e);
     } // This ends the catch
 
+    itemRemover(indexsToRemove, finalItems);
     return finalItems;
   } // This ends the class
+
+  public static void itemRemover(LinkedList<Integer> itemsToRemove, LinkedList finalItems) {
+    LinkedList<Integer> reversed = new LinkedList();
+
+    // This reverses the list
+    for (int y = 0, j = itemsToRemove.size(); y < j; y++) {
+      reversed.add(itemsToRemove.getLast());
+      itemsToRemove.removeLast();
+    }
+
+    // This removes the item
+    int randIndex = 0;
+    for (int m = 0, n = reversed.size(); m < n; m++) {
+      randIndex = reversed.get(m);
+      finalItems.remove(randIndex);
+    }
+  } // Ends Class
+
+  public static void nameGen() {
+
+  } // Ends Class
+
 } // Ends program
