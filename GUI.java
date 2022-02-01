@@ -25,6 +25,9 @@ public class GUI extends JFrame {
   static String selectedPrice = "--:--";
   static String selectedHours = "--:--";
 
+  // A list that acts somewhat like a global variable
+  LinkedList dataSetList = new LinkedList();
+
   public GUI() {
     try {
       // parsing file "JSONExample.json"
@@ -169,6 +172,27 @@ public class GUI extends JFrame {
       txtLocationOutput.setBounds(317, 364, 601, 124);
       getContentPane().add(txtLocationOutput);
 
+      // It will display all possible choices in a list from which the user can select
+      // an option.
+      JList resultsListed = new JList();
+      resultsListed.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+      resultsListed.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+      // This is the list that is displayed
+      resultsListed.setModel(new AbstractListModel() {
+        String[] values = new String[] {};
+
+        public int getSize() {
+          return values.length;
+        }
+
+        public Object getElementAt(int index) {
+          return values[index];
+        }
+      });
+      resultsListed.setBackground(Color.GRAY);
+      resultsListed.setBounds(317, 76, 601, 241);
+      getContentPane().add(resultsListed);
+
       // A button that then searches.
       JButton btnRun = new JButton("Search!");
       btnRun.addActionListener(new ActionListener() {
@@ -193,39 +217,41 @@ public class GUI extends JFrame {
             LinkedList filteringPolicy = Reader();
             // This will produce a list of the items to be used
             LinkedList resultingItems = locationFilter(superList, filteringPolicy);
-            System.out.println(resultingItems);
-          }
-        }
+
+            dataSetList = resultingItems;
+
+            // This gets the list of just the names
+            LinkedList locationNames = nameGen(resultingItems);
+
+            // Sets the display list to the names.
+            resultsListed.setModel(new AbstractListModel() {
+              Object[] array = locationNames.toArray();
+
+              // Dont really know what these do but oh well
+              public int getSize() {
+                return array.length;
+              }
+
+              public Object getElementAt(int index) {
+                return array[index];
+              }
+            });
+
+          } // Ends conditional
+        } // Ends action event
       });
       btnRun.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
       btnRun.setBounds(545, 327, 106, 27);
       getContentPane().add(btnRun);
 
-      // It will display all possible choices in a list from which the user can select
-      // an option.
-      JList resultsListed = new JList();
-      resultsListed.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-      resultsListed.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
-      resultsListed.setModel(new AbstractListModel() {
-        String[] values = new String[] { "Item 1", "Item 2", "Item 3 ", "Item 4", "Item 5", "Item 6" };
-
-        public int getSize() {
-          return values.length;
-        }
-
-        public Object getElementAt(int index) {
-          return values[index];
-        }
-      });
-      resultsListed.setBackground(Color.GRAY);
-      resultsListed.setBounds(317, 76, 601, 241);
-      getContentPane().add(resultsListed);
-
-      // Event listener for when an item is selected
+      // Event listener for when an item is selected from the JList property
       resultsListed.addListSelectionListener(new ListSelectionListener() {
         public void valueChanged(ListSelectionEvent e) {
+          // Gets the index
           int selectedOption = resultsListed.getSelectedIndex();
-          String selectedListedOption = Integer.toString(selectedOption + 1);
+          // Runs the function and returns a string
+          String selectedListedOption = (String) queryInfo(dataSetList, selectedOption);
+          // Displays that to the grey box
           txtLocationOutput.setText(selectedListedOption);
         }
       });
@@ -371,7 +397,7 @@ public class GUI extends JFrame {
               testPass2 = false;
             }
 
-          } else if (p == 2) { 
+          } else if (p == 2) {
             // Checks Rating
             long tester = (long) attributes.get(2);
             long userSelection = (long) itemList;
@@ -447,8 +473,36 @@ public class GUI extends JFrame {
     }
   } // Ends Class
 
-  public static void nameGen() {
+  public static LinkedList nameGen(LinkedList resultingItems) {
 
+    LinkedList namesList = new LinkedList();
+
+    for (int i = 0; i < resultingItems.size(); i++) {
+      LinkedList individual = (LinkedList) resultingItems.get(i);
+
+      for (int p = 0; p < individual.size(); p++) {
+        if (p == 4) {
+          namesList.add(individual.get(p));
+        }
+      } // Ends inner for loop
+    } // Ends outer for loop
+
+    return namesList;
   } // Ends Class
+
+  public static Object queryInfo(LinkedList resultingItems, int selectedOption) {
+    // This is a linkedList that contains all the location data
+    LinkedList information = (LinkedList) resultingItems.get(selectedOption);
+
+    // This is the mega-output statement that will display all the information
+    Object outputInformation = information.get(4) + "\n\n" + information.get(3) + "\n" + "Rating: " + information.get(2)
+        + "\tProximity: " + information.get(0) + " Mile(s) Away\nPrice: " + information.get(1) + "\t\tOpen\n";
+
+    // This converts it to a String
+    outputInformation = outputInformation.toString();
+
+    return outputInformation;
+
+  } // Ends class
 
 } // Ends program
