@@ -1,19 +1,24 @@
+// This imports JFram and the rest of the Swing Library.
 import javax.swing.*;
 
+// This imports the libraries used for opening files and possible errors.
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+// This imports the libraries required for using JSON.
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 
+// This imports some Awt libraries that are used with Swing.
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.*;
 import javax.swing.event.*;
 
+// This imports utilities needed like Hash Maps.
 import java.util.*;
 
 public class GUI extends JFrame {
@@ -79,9 +84,9 @@ public class GUI extends JFrame {
       });
 
       // Creates the header for the second dropdown (Rating).
-      JLabel lblRatings = new JLabel("Ratings");
+      JLabel lblRatings = new JLabel("Minimum Rating");
       lblRatings.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
-      lblRatings.setBounds(50, 124, 112, 31);
+      lblRatings.setBounds(50, 124, 160, 31);
       getContentPane().add(lblRatings);
 
       // Code for the second dropdown which deals with ratings.
@@ -100,9 +105,9 @@ public class GUI extends JFrame {
       });
 
       // Creates the header for the third dropdown (Proximity).
-      JLabel lblProximity = new JLabel("Location");
+      JLabel lblProximity = new JLabel("Minimum Distance");
       lblProximity.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
-      lblProximity.setBounds(50, 214, 112, 31);
+      lblProximity.setBounds(50, 214, 190, 31);
       getContentPane().add(lblProximity);
 
       // Code for the third dropdown which deals with proximity.
@@ -166,7 +171,7 @@ public class GUI extends JFrame {
       JTextPane txtLocationOutput = new JTextPane();
       txtLocationOutput.setEditable(false);
       txtLocationOutput.setText(
-          "Please select from the attributes to the left and click the search button above when you are ready!");
+          "Please select from the attributes to the left and click the search button above when you are ready! If no locations are listed, try broadening your search.");
       txtLocationOutput.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
       txtLocationOutput.setBackground(Color.LIGHT_GRAY);
       txtLocationOutput.setBounds(317, 364, 601, 124);
@@ -179,6 +184,7 @@ public class GUI extends JFrame {
       resultsListed.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
       // This is the list that is displayed
       resultsListed.setModel(new AbstractListModel() {
+        // Creates a default list for the JList
         String[] values = new String[] {};
 
         public int getSize() {
@@ -197,18 +203,20 @@ public class GUI extends JFrame {
       JButton btnRun = new JButton("Search!");
       btnRun.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
+          // Checks to see if the attributes selected by the user are teh default values.
           if ((selectedAttraction == "--:--") || (selectedRating == "--:--") || (selectedProximity == "--:--")
               || (selectedPrice == "--:--") || (selectedHours == "--:--")) {
 
             txtLocationOutput.setText("Make sure you select all options.");
 
+          // Checks to see if the attributes selected by the user are teh default values.
           } else if ((selectedAttraction == "------") || (selectedRating == "------") || (selectedProximity == "------")
               || (selectedPrice == "------") || (selectedHours == "------")) {
 
             txtLocationOutput.setText("Make sure you select all options.");
 
           } else {
-
+            // If the user selects attributes, this runs.
             txtLocationOutput.setText("Please select a location to view its information.");
 
             // This creates a linked list that has all locations
@@ -224,6 +232,7 @@ public class GUI extends JFrame {
             LinkedList locationNames = nameGen(resultingItems);
 
             // Sets the display list to the names.
+            
             resultsListed.setModel(new AbstractListModel() {
               Object[] array = locationNames.toArray();
 
@@ -249,9 +258,17 @@ public class GUI extends JFrame {
         public void valueChanged(ListSelectionEvent e) {
           // Gets the index
           int selectedOption = resultsListed.getSelectedIndex();
+
+          // Makes sure that negative indexes are not possible.
+          if (selectedOption < 0) {
+            selectedOption = 0;
+          }
+
+
           // Runs the function and returns a string
           String selectedListedOption = (String) queryInfo(dataSetList, selectedOption);
-          // Displays that to the grey box
+
+          // Displays that to the JTextbox
           txtLocationOutput.setText(selectedListedOption);
         }
       });
@@ -274,7 +291,7 @@ public class GUI extends JFrame {
       Iterator itr = id.iterator();
       Iterator itr2 = id.iterator();
 
-      // This will deal with making all the items into a list
+      // This will deal with making all the items into a list.
       while (itr2.hasNext()) {
         // Creates a linked list that will transfer the data from each item.
         LinkedList transferList = new LinkedList();
@@ -304,17 +321,22 @@ public class GUI extends JFrame {
       System.out.println(e);
     }
 
+    // Returns a LinkedList that contaians all of the locations and their data.
     return superList;
   } // This iterates through every item in the Json
 
   public static LinkedList Reader() {
+    // A metheod that will determine whether a location passes or fails the attributes.
+
     // A linked list that can be referenced and will contain all attributes
     LinkedList attributes = new LinkedList();
 
     try {
+      // Declares long integers so that logical operators can be used.
       long selectedProximityLong = 0;
       long selectedRatingLong = 0;
 
+      // Determines what selectedProximityLong will be based on user input.
       if (selectedProximity == "1 Mile Away") {
         selectedProximityLong = 1;
       } else if (selectedProximity == "5 Miles Away") {
@@ -325,6 +347,7 @@ public class GUI extends JFrame {
         selectedProximityLong = 15;
       }
 
+      // Determines what selectedRatingLong will be based on user input.
       if (selectedRating == "5 Stars") {
         selectedRatingLong = 5;
       } else if (selectedRating == "4 Stars") {
@@ -337,6 +360,7 @@ public class GUI extends JFrame {
         selectedRatingLong = 1;
       }
 
+      // This adds all the attributes to a LinkedList for easier accessing.
       attributes.add(selectedProximityLong);
       attributes.add(selectedPrice);
       attributes.add(selectedRatingLong);
@@ -348,6 +372,7 @@ public class GUI extends JFrame {
       System.out.println(e);
     }
 
+    // Returns a LinkedList
     return attributes;
   } // Ends Reader class
 
@@ -359,7 +384,8 @@ public class GUI extends JFrame {
     try {
 
       for (int i = 0; i < superList.size(); i++) {
-        // This will deal with running through all the inner lists.
+        // This will deal with running through all the lists contained within the master list (superList).
+
         Object nestedList = superList.get(i);
 
         boolean testPass = true;
@@ -373,13 +399,16 @@ public class GUI extends JFrame {
 
         LinkedList innerList = new LinkedList();
         // innerList.add(nestedList);
+
+        // Converts the lists that are nested into LinkedLists and makes innerList equal to them.
         innerList = (LinkedList) nestedList;
 
         for (int p = 0; p < innerList.size(); p++) {
-          // This will deal with running trough all the items on the nested lists
+          // This will deal with running trough all the items on the nested lists.
 
           Object itemList = innerList.get(p);
 
+          // This code will determine what item in the list is on and determine if it passes that attribute.
           if (p == 0) {
             // Checks proximty
             long tester = (long) attributes.get(0);
@@ -417,6 +446,7 @@ public class GUI extends JFrame {
           } else if (p == 6) {
             // Checks operating hours
             String userSelection = (String) itemList;
+            // Tester will convert the user attribute for hours to a simple morning afternoon evening format (MAE).
             String tester = "";
             if (attributes.get(4) == "Morning") {
               tester = "M";
@@ -435,6 +465,7 @@ public class GUI extends JFrame {
           }
         } // Ends item for loop.
 
+        // Checks to make sure every item passed.
         if ((testPass1 == true) && (testPass2 == true) && (testPass3 == true) && (testPass4 == true)
             && (testPass5 == true)) {
           testPass = true;
@@ -442,6 +473,7 @@ public class GUI extends JFrame {
           testPass = false;
         }
 
+        // Adds failed items to a list that will be removed
         if (testPass == false) {
           indexsToRemove.add(i);
         }
@@ -452,11 +484,15 @@ public class GUI extends JFrame {
       System.out.println(e);
     } // This ends the catch
 
+    // Removes any items that did not pass the tests.
     itemRemover(indexsToRemove, finalItems);
     return finalItems;
   } // This ends the class
 
   public static void itemRemover(LinkedList<Integer> itemsToRemove, LinkedList finalItems) {
+    // A metheod that will remove any items from the JSON file that does not qualify based on selected transferList.
+
+    // A LinkedList will be reversed to stop possible wrong indexes
     LinkedList<Integer> reversed = new LinkedList();
 
     // This reverses the list
@@ -465,7 +501,7 @@ public class GUI extends JFrame {
       itemsToRemove.removeLast();
     }
 
-    // This removes the item
+    // This removes the item from the master list and produces a finalized list.
     int randIndex = 0;
     for (int m = 0, n = reversed.size(); m < n; m++) {
       randIndex = reversed.get(m);
@@ -474,16 +510,21 @@ public class GUI extends JFrame {
   } // Ends Class
 
   public static LinkedList nameGen(LinkedList resultingItems) {
+    // This metheod produces a list of just the names of possible locations that will be listed in the JList.
 
+    // A list where the names will be stored
     LinkedList namesList = new LinkedList();
 
+    // A For loop that will loop through every nested LinkedList.
     for (int i = 0; i < resultingItems.size(); i++) {
       LinkedList individual = (LinkedList) resultingItems.get(i);
 
+      // A For loop that will loop through every item in a LinkedList and save the name or "ID" of a possible location.
       for (int p = 0; p < individual.size(); p++) {
         if (p == 4) {
           namesList.add(individual.get(p));
-        }
+
+        } // This ends the if statement
       } // Ends inner for loop
     } // Ends outer for loop
 
@@ -491,16 +532,19 @@ public class GUI extends JFrame {
   } // Ends Class
 
   public static Object queryInfo(LinkedList resultingItems, int selectedOption) {
+    // This metheod get the user selected item, and displays more information in the JText Area
+
     // This is a linkedList that contains all the location data
     LinkedList information = (LinkedList) resultingItems.get(selectedOption);
 
     // This is the mega-output statement that will display all the information
-    Object outputInformation = information.get(4) + "\n\n" + information.get(3) + "\n" + "Rating: " + information.get(2)
+    Object outputInformation = information.get(4) + "\n" + information.get(3) + "\n" + "Rating: " + information.get(2)
         + "\tProximity: " + information.get(0) + " Mile(s) Away\nPrice: " + information.get(1) + "\t\tOpen\n";
 
-    // This converts it to a String
+    // This converts outputInformation to a String
     outputInformation = outputInformation.toString();
 
+    // Will return a string that contains all the information, formatted, that will be displayed.
     return outputInformation;
 
   } // Ends class
