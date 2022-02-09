@@ -22,7 +22,7 @@ import javax.swing.event.*;
 import java.util.*;
 
 public class GUI extends JFrame {
-  // This is used to create the GUI orentation when ran.
+  // This is used to create the GUI orientation when ran.
 
   static String selectedAttraction = "--:--";
   static String selectedRating = "--:--";
@@ -33,6 +33,8 @@ public class GUI extends JFrame {
   // A list that acts somewhat like a global variable
   LinkedList dataSetList = new LinkedList();
 
+  @SuppressWarnings("unchecked")
+
   public static void main(String[] args) throws FileNotFoundException {
     // This code will run automatically
     // This creates a GUI using the GUI.java file.
@@ -42,6 +44,8 @@ public class GUI extends JFrame {
     instance.setSize(new Dimension(1000,600));
     instance.setVisible(true);
   }
+
+  @SuppressWarnings("unchecked")
 
   public GUI() {
     try {
@@ -306,13 +310,14 @@ public class GUI extends JFrame {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public static void helpBox() {
     // A class that deals with the creation of a new frame that is displayed when
     // thh btnHelp is pressed.
 
     // Creates the frame
     JFrame helpFrame = new JFrame();
-    // Sets the default close metheod.
+    // Sets the default close method.
     helpFrame.setDefaultCloseOperation(helpFrame.HIDE_ON_CLOSE);
     // Sets the background color of the frame.
     helpFrame.getContentPane().setBackground(Color.LIGHT_GRAY);
@@ -355,7 +360,9 @@ public class GUI extends JFrame {
     // Sets visibility of the frame.
     helpFrame.setVisible(true);
 
-  } // Ends metheod helpBox
+  } // Ends method helpBox
+
+  @SuppressWarnings("unchecked")
 
   public static LinkedList masterList(JSONObject fileData) {
 
@@ -399,12 +406,14 @@ public class GUI extends JFrame {
       System.out.println(e);
     }
 
-    // Returns a LinkedList that contaians all of the locations and their data.
+    // Returns a LinkedList that contains all of the locations and their data.
     return superList;
   } // This iterates through every item in the Json
 
+  @SuppressWarnings("unchecked")
+
   public static LinkedList Reader() {
-    // A metheod that will determine whether a location passes or fails the
+    // A method that will determine whether a location passes or fails the
     // attributes.
 
     // A linked list that can be referenced and will contain all attributes
@@ -453,6 +462,8 @@ public class GUI extends JFrame {
     return attributes;
   } // Ends Reader class
 
+  @SuppressWarnings("unchecked")
+
   public static LinkedList locationFilter(LinkedList superList, LinkedList attributes) {
 
     LinkedList finalItems = superList;
@@ -468,7 +479,7 @@ public class GUI extends JFrame {
 
         boolean testPass = true;
 
-        // These are nessacary to determine if all tests are passed.
+        // These are necessary to determine if all tests are passed.
         boolean testPass1 = true;
         boolean testPass2 = true;
         boolean testPass3 = true;
@@ -490,7 +501,7 @@ public class GUI extends JFrame {
           // This code will determine what item in the list is on and determine if it
           // passes that attribute.
           if (p == 0) {
-            // Checks proximty
+            // Checks proximity
             long tester = (long) attributes.get(0);
             long userSelection = (long) itemList;
             // Creates an integer so that the expression below works.
@@ -587,8 +598,10 @@ public class GUI extends JFrame {
     return finalItems;
   } // This ends the class
 
+  @SuppressWarnings("unchecked")
+
   public static void itemRemover(LinkedList<Integer> itemsToRemove, LinkedList finalItems) {
-    // A metheod that will remove any items from the JSON file that does not qualify
+    // A method that will remove any items from the JSON file that does not qualify
     // based on selected transferList.
 
     // A LinkedList will be reversed to stop possible wrong indexes
@@ -608,8 +621,10 @@ public class GUI extends JFrame {
     }
   } // Ends Class
 
+  @SuppressWarnings("unchecked")
+
   public static LinkedList nameGen(LinkedList resultingItems) {
-    // This metheod produces a list of just the names of possible locations that
+    // This method produces a list of just the names of possible locations that
     // will be listed in the JList.
 
     // A list where the names will be stored
@@ -632,8 +647,10 @@ public class GUI extends JFrame {
     return namesList;
   } // Ends Class
 
+  @SuppressWarnings("unchecked")
+
   public static Object queryInfo(LinkedList resultingItems, int selectedOption) {
-    // This metheod get the user selected item, and displays more information in the
+    // This method get the user selected item, and displays more information in the
     // JText Area
 
     // This is a linkedList that contains all the location data
